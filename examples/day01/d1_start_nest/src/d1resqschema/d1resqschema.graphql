@@ -1,0 +1,24 @@
+type D1resqschema {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input CreateD1resqschemaInput {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input UpdateD1resqschemaInput {
+  id: Int!
+}
+
+type Query {
+  d1resqschema: [D1resqschema]!
+  d1resqschema(id: Int!): D1resqschema
+}
+
+type Mutation {
+  createD1resqschema(createD1resqschemaInput: CreateD1resqschemaInput!): D1resqschema!
+  updateD1resqschema(updateD1resqschemaInput: UpdateD1resqschemaInput!): D1resqschema!
+  removeD1resqschema(id: Int!): D1resqschema
+}
