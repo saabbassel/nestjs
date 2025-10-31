@@ -55,6 +55,50 @@ It is written in TypeScript and its structure, especially the modules and depend
 https://nestjs.com/
 https://github.com/nestjs
 
+- A Simple NestJS Application
+  The course teaches how to create and initialize a NestJS project using the Nest CLI, guiding you through the setup process.
+  You’ll learn to use the CLI effectively, understanding which options to select for different scenarios.
+  The course covers the conventions NestJS uses for organizing directories and files, helping you follow best practices.
+  By the end, you’ll be able to structure a NestJS application for maintainability and scalability, ready to build your own projects.
+
+- What Is NestJS?
+  NestJS is a framework for building efficient, scalable Node.js server-side applications, providing a robust architecture on top of Express or Fastify.
+  Unlike plain Node.js, which lacks strong organizational conventions, NestJS enforces modularity and maintainability through its patterns.
+  It uses TypeScript by default, encouraging type-safe code and reducing runtime errors.
+  NestJS offers an opinionated approach, making backend development more predictable and collaborative, especially for teams.
+  The framework ensures that applications are stable, testable, and easy for new developers to understand if they know NestJS conventions.
+- How Does a NestJS Application Work?
+  NestJS applications follow the model-view-controller (MVC) pattern, organizing features into modules for separation of concerns.
+  The main entry point is main.ts, which runs the bootstrap function to start the app, typically as an Express server.
+  The root AppModule imports feature modules, such as Tickets and Cart, each encapsulating related functionality.
+  Decorators (e.g., @Module, @Controller, @Injectable) are used to define modules, controllers, and services, making code more readable and organized.
+  Controllers handle HTTP requests and responses, defining routes for clients to call.
+  Services contain business logic, such as data retrieval or processing, and are injected into controllers.
+  Feature modules can depend on each other; for example, CartService may use TicketsService to access ticket data.
+  Models (TypeScript interfaces) define the shape of data, ensuring consistency across the application.
+  The module loader ensures all dependencies are resolved, allowing features to interact seamlessly.
+
+- NestJS Project Structure
+  A typical NestJS project includes configuration files: package.json (dependencies, scripts), tsconfig.json (TypeScript settings), .eslintrc (linting rules), and .prettierrc (code formatting).
+  The src directory contains main.ts (entry point) and app.module.ts (root module), as well as feature-specific folders.
+  Each feature (e.g., tickets, cart) has its own module, controller, service, and model, organized in dedicated folders for clarity.
+  Best practices include creating one module per feature, keeping all related files together, and using consistent naming conventions.
+  Global settings (e.g., middleware, configuration) belong in main.ts, while feature-specific settings go in their respective modules.
+  The MVC pattern is enforced: controllers handle HTTP, services handle business logic, models define data, and modules group related components.
+
+- Create a New NestJS Application with the Nest CLI
+  The Nest CLI is an npm package that simplifies project creation and code generation.
+  Install the CLI globally with npm, then create a new project using nest new <project-name>.
+  The CLI scaffolds all necessary config files, main.ts, app.module.ts, and basic controller/service files.
+  Use nest generate (or nest g) to create modules, controllers, and services, following NestJS naming conventions.
+  The CLI automatically imports generated files into the appropriate modules, reducing manual setup.
+  For files not covered by schematics (e.g., models), create them manually and organize them within feature folders.
+- Run and Build with the Nest CLI
+  Use nest start or npm run start to launch the application; watch mode (nest start --watch or npm run start:dev) reloads the app on code changes.
+  nest build or npm run build compiles TypeScript code to JavaScript, outputting to the dist folder as defined in tsconfig.json.
+  The CLI provides many commands for development, including --dry-run to preview changes before applying them.
+  Scripts in package.json often wrap CLI commands for convenience and consistency.
+
 ## ✅ Core Concepts
 
 Modules: Organize code into cohesive blocks.
@@ -204,6 +248,75 @@ bootstrap();
   Use services for business logic
   Use controllers for handling requests and responses
 
+## Controler
+
+- Introduction to Controllers
+  Building APIs is complex without structure; this course teaches how to create well-structured endpoints in NestJS.
+  You’ll learn to set up controllers and routing, handle requests/responses, and implement validation and DTOs.
+  By the end, you’ll be able to build maintainable, efficient APIs using NestJS controllers and routing.
+
+- Intro to Controllers
+  Controllers in NestJS handle incoming API requests and send responses.
+  Use the @Controller decorator to define a controller and optionally set a route prefix.
+  Methods inside controllers are mapped to HTTP routes using decorators like @Get, @Post, etc.
+  Controllers delegate business logic to services, keeping code modular.
+  The Nest CLI can scaffold modules and controllers, automatically handling imports and file structure.
+  Test files are generated by default but can be omitted with a flag.
+
+- GET Routes and the Param Decorator
+  Use @Get decorator to define GET routes; route prefix from @Controller applies to all handlers.
+  Route handlers can accept parameters from the URL using the @Param decorator.
+  @Param extracts values from the route and injects them into the handler method.
+  Example: findAll returns all speakers; findOne returns a speaker by id.
+  Test GET routes using a client (e.g., Rapid API, Postman) to verify correct responses.
+
+- POST Route and the Body Decorator
+  Use @Post decorator to define a route for creating resources.
+  The @Body decorator injects the request body into a method parameter.
+  TypeScript can define expected structure for the body (e.g., name, expertise).
+  Test POST requests to ensure the API extracts and returns the correct data.
+
+- PUT and DELETE Routes
+  @Put decorator defines a route for updating resources; expects id from route and updated data from body.
+  Use @Param for id and @Body for updated data; TypeScript defines optional fields.
+  @Delete decorator defines a route for deleting resources; uses @Param to extract id.
+  Typically, these routes call service methods, but initial examples return static data for testing.
+- The HTTPStatus Decorator
+  Use @HttpCode decorator to set custom HTTP status codes for responses (e.g., 204 No Content).
+  NestJS provides HttpStatus constants for readability and error prevention.
+  Setting status codes helps communicate the result of operations (e.g., successful deletion).
+
+- The Query Decorator
+  @Query decorator extracts query string parameters from requests.
+  Example: scheduleDay parameter added to speakers; @Query('scheduleDay') injects its value.
+  Use pipes (e.g., ParseIntPipe) to transform query parameters to correct types before method execution.
+  Test GET requests with query parameters to verify correct extraction and transformation.
+
+- DTOs and Validation
+  Controllers should delegate business logic to services for maintainability.
+  Services manage data (e.g., in-memory array for speakers) and provide CRUD methods.
+  Inject services into controllers via constructor for single instance usage.
+  Use ParseIntPipe to convert route parameters to numbers for type safety.
+  Test all CRUD operations to ensure correct delegation and data management.
+
+- Data Validation with Data Transfer Objects (DTOs)
+  DTOs define the expected structure of incoming request data for validation.
+  Create DTO classes (e.g., CreateSpeakerDTO) with properties and validation decorators (IsNotEmpty, IsString, IsEmail).
+  Install class-validator and class-transformer for validation support.
+  Set up a global ValidationPipe in main.ts to enforce validation across all routes.
+  Invalid data is rejected with descriptive error messages, improving security and reliability.
+
+- ValidationPipe and Whitelisting
+  ValidationPipe can be configured with whitelist: true to strip out extra, unwanted fields from requests.
+  Prevents processing of unexpected or malicious data by enforcing DTO structure.
+  Test by sending requests with extra fields; only defined DTO properties are accepted.
+
+- Generate a Resource with NestJS CLI
+  Nest CLI can generate an entire resource (module, controller, service, DTOs, entities) with one command.
+  Choose transport layer (e.g., REST API) and enable CRUD entry points for rapid development.
+  Generated files are automatically imported and registered in the app.
+  DTOs and entities are scaffolded for best practices and faster feature development.
+
 # 📝 Summary
 
 Nest applications follow a Model-View-
@@ -324,7 +437,6 @@ Think of NestJS as a “modern workshop” — tools are organized, and you can 
   - Git basics (init, commit, push, branches)
 
 Hands-on: Create a simple "Hello World" REST API.
-
 
 Day02 Modules: Controllers, Providers, Routing and Dependency Injection
 
@@ -583,7 +695,6 @@ return of([]);
     Challenge: Update Task Status, Solution: Update Task Status,
     Feature: Searching and Filtering
     Summary Quiz, questions, Section Code
-
 
 # topics
 
